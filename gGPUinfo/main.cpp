@@ -42,6 +42,16 @@ int main()
 
 	std::cout << std::endl;
 
+	//Get GPU graphics clocks
+	system("nvidia-smi --query-gpu=clocks.gr --format=csv");
+
+	std::cout << std::endl;
+
+	//Get GPU memory clocks
+	system("nvidia-smi --query-gpu=clocks.sm --format=csv");
+
+	std::cout << std::endl;
+
 	//Get GPU utilization
 	system("nvidia-smi --query-gpu=utilization.gpu --format=csv");
 
@@ -64,6 +74,11 @@ int main()
 
 	//Get used GPU memory
 	system("nvidia-smi --query-gpu=memory.used --format=csv");
+
+
+
+	//Show all GPU infomation :)
+	system("nvidia-smi -i 0 -q");
 
 	return 0;
 }
