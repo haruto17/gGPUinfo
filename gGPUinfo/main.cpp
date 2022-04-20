@@ -27,6 +27,11 @@ int main()
 
 	std::cout << std::endl;
 
+	//Get GPU power consumption
+	system("nvidia-smi --query-gpu=power.draw --format=csv");
+
+	std::cout << std::endl;
+
 	//Get GPU temperature
 	system("nvidia-smi --query-gpu=temperature.gpu --format=csv");
 
