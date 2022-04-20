@@ -7,6 +7,11 @@ int main()
 
 	std::cout << std::endl;
 
+	//Get connected GPUs
+	system("nvidia-smi --query-gpu=count --format=csv");
+
+	std::cout << std::endl;
+
 	//Get GPU name
 	system("nvidia-smi --query-gpu=gpu_name --format=csv");
 
@@ -17,8 +22,18 @@ int main()
 
 	std::cout << std::endl;
 
+	//Get vbios_version
+	system("nvidia-smi --query-gpu=vbios_version --format=csv");
+
+	std::cout << std::endl;
+
 	//Get GPU temperature
 	system("nvidia-smi --query-gpu=temperature.gpu --format=csv");
+
+	std::cout << std::endl;
+
+	//Get GPU fan speed
+	system("nvidia-smi --query-gpu=fan.speed --format=csv");
 
 	std::cout << std::endl;
 
