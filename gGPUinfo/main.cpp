@@ -1,4 +1,5 @@
 #include<iostream>
+#include"NVAPI/nvapi.h"
 
 int main()
 {
