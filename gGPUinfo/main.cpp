@@ -1,6 +1,12 @@
 #include<iostream>
 #include"NVAPI/nvapi.h"
 
+#if _M_AMD64
+#pragma comment(lib,"NVAPI/amd64/nvapi64.lib")
+#else
+#pragma comment(lib,"NVAPI/x86/nvapi.lib")
+#endif
+
 int main()
 {
 
