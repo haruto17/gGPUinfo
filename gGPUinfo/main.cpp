@@ -20,14 +20,14 @@ int main()
 	if (ret != NVAPI_OK)
 	{
 		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize : " << err << std::endl;
+		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
 	}
 
 
 	//Show NVAPI version
 	NvAPI_ShortString ver;
 	NvAPI_GetInterfaceVersionString(ver);
-	std::cout << "NVAPI Version : " << ver << std::endl;
+	std::cout << "NVAPI Version: " << ver << std::endl;
 	
 	NvU32 cnt;
 
@@ -41,11 +41,11 @@ int main()
 	if (ret != NVAPI_OK)
 	{
 		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize : " << err << std::endl;
+		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
 	}
 	else
 	{
-		std::cout << GPUName << std::endl;
+		std::cout << "Name: " << GPUName << std::endl;
 	}
 	
 	//Show attached GPU nums
@@ -57,11 +57,11 @@ int main()
 	if (ret != NVAPI_OK)
 	{
 		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize : " << err << std::endl;
+		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
 	}
 	else
 	{
-		std::cout << cnt_attached << std::endl;
+		std::cout << "Attached: " << cnt_attached << std::endl;
 	}
 
 	//Show GPU temp
@@ -71,11 +71,11 @@ int main()
 	if (ret != NVAPI_OK)
 	{
 		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize : " << err << std::endl;
+		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
 	}
 	else
 	{
-		std::cout << thermal.sensor[0].currentTemp << std::endl;
+		std::cout << "Temp: " << thermal.sensor[0].currentTemp << std::endl;
 	}
 
 	////Get timestamp
