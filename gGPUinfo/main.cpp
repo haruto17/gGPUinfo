@@ -1,12 +1,5 @@
 #include<iostream>
-#include"NVAPI/nvapi.h"
 #include"nvml/nvml.h"
-
-//#if _M_AMD64
-//#pragma comment(lib,"NVAPI/amd64/nvapi64.lib")
-//#else
-//#pragma comment(lib,"NVAPI/x86/nvapi.lib")
-//#endif
 
 #pragma comment(lib,"nvml/lib/nvml.lib")
 
@@ -82,16 +75,16 @@ int main()
 
 
 
-	//Power usage
+	//Power util
 	unsigned int power;
 	result = nvmlDeviceGetPowerUsage(device, &power);
 	if (NVML_SUCCESS != result)
 	{
-		std::cout << "Failed to query get power usage: " << nvmlErrorString(result) << std::endl;
+		std::cout << "Failed to query get power util: " << nvmlErrorString(result) << std::endl;
 	}
 	else
 	{
-		std::cout << "Power usage: " << power / 1000.0 << "[W]" << std::endl;
+		std::cout << "Power util: " << power / 1000.0 << "[W]" << std::endl;
 	}
 
 
@@ -122,5 +115,39 @@ int main()
 		std::cout << device_fanspeed << std::endl;
 	}
 
-	return 0;
+
+	//GPU util
+	nvmlUtilization_t device_util;
+	result = nvmlDeviceGetUtilizationRates(device, &device_util);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get GPU usage: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+
+		std::cout << "GPU: " << device_util.gpu << "[%]" << std::endl;
+		std::cout << "Memory: " << device_util.memory << "[%]" << std::endl;
+	}
+
+
+	//Memory info
+	nvmlMemory_t memory;
+	result = nvmlDeviceGetMemoryInfo(device, &memory);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get memory info: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "Memory info" << std::endl;
+		std::cout << "Free: " << memory.free << "[B]" << std::endl;
+		std::cout << "Used: " << memory.used << "[B]" << std::endl;
+		std::cout << "Total: " << memory.total << "[B]" << std::endl;
+	}
+
+
+
+
+	nvmlShutdown();
 }
