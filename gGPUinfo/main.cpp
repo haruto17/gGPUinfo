@@ -37,7 +37,7 @@ int main()
 	}
 	else
 	{
-		std::cout << "Count: " << device_count << std::endl;
+		std::cout << "Attached: " << device_count << std::endl;
 	}
 
 
@@ -82,7 +82,31 @@ int main()
 
 
 
+	//Power usage
+	unsigned int power;
+	result = nvmlDeviceGetPowerUsage(device, &power);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get power usage: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "Power usage: " << power / 1000.0 << "[W]" << std::endl;
+	}
 
+
+
+	//Temperature
+	unsigned int temp;
+	result = nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &temp);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get temperature: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "Temp: " << temp << "[C]" << std::endl;
+	}
 
 
 
