@@ -1,83 +1,57 @@
 #include<iostream>
 #include"NVAPI/nvapi.h"
-#include"NVAPI/nvapi_lite_common.h"
+#include"nvml/nvml.h"
 
-#if _M_AMD64
-#pragma comment(lib,"NVAPI/amd64/nvapi64.lib")
-#else
-#pragma comment(lib,"NVAPI/x86/nvapi.lib")
-#endif
+//#if _M_AMD64
+//#pragma comment(lib,"NVAPI/amd64/nvapi64.lib")
+//#else
+//#pragma comment(lib,"NVAPI/x86/nvapi.lib")
+//#endif
 
-NvAPI_ShortString err;
+#pragma comment(lib,"nvml/lib/nvml.lib")
+
+const unsigned int gpu_id = 0;
 
 int main()
 {
-	NvAPI_Status ret = NVAPI_OK;
+	nvmlInit();
 
-	ret = NvAPI_Initialize();
+	nvmlDevice_t device;
 
-	if (ret != NVAPI_OK)
+	nvmlReturn_t result;
+
+	nvmlDeviceGetHandleByIndex(gpu_id, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
 	{
-		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
+		std::cout << "Failed to initialize NVML: " << nvmlErrorString(result) << std::endl;
 	}
 
-	//Show NVAPI version
-	NvAPI_ShortString ver;
-	NvAPI_GetInterfaceVersionString(ver);
-	std::cout << "NVAPI Version: " << ver << std::endl;
-	
-	//Show display driver version
-	NvU32 dd_ver;
-	NvAPI_ShortString branch;
-	ret = NvAPI_SYS_GetDriverAndBranchVersion(&dd_ver, branch);
-	std::cout << "Display driver version: " << dd_ver << std::endl;
-
-
-	//Show GPU name
-	NvU32 cnt;
-	NvPhysicalGpuHandle phys;
-	ret = NvAPI_EnumPhysicalGPUs(&phys, &cnt);
-	NvAPI_ShortString GPUName;
-	ret = NvAPI_GPU_GetFullName(phys, GPUName);
-	if (ret != NVAPI_OK)
+	//Attached GPU count
+	unsigned int device_count;
+	result = nvmlDeviceGetCount(&device_count);
+	if (NVML_SUCCESS != result)
 	{
-		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
+		std::cout << "Failed to query device count: " << nvmlErrorString(result) << std::endl;
 	}
 	else
 	{
-		std::cout << "Name: " << GPUName << std::endl;
+		std::cout << "Count: " << device_count << std::endl;
 	}
-	
-	//Show attached GPU nums
-	NvPhysicalGpuHandle hGPUHandles[NVAPI_MAX_PHYSICAL_GPUS] = { 0 };
-	NvU32 cnt_attached = 0;
-	ret = NvAPI_EnumPhysicalGPUs(hGPUHandles, &cnt_attached);
-	if (ret != NVAPI_OK)
+
+
+	//GPU name
+	char device_name[64];
+	result = nvmlDeviceGetName(device, device_name, 64);
+	if (NVML_SUCCESS != result)
 	{
-		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
+		std::cout << "Failed to query device name: " << nvmlErrorString(result) << std::endl;
 	}
 	else
 	{
-		std::cout << "Attached: " << cnt_attached << std::endl;
+		std::cout << "Name: " << device_name << std::endl;
 	}
-
-	//Show GPU temp
-	NV_GPU_THERMAL_SETTINGS thermal;
-	thermal.version = NV_GPU_THERMAL_SETTINGS_VER;
-	ret = NvAPI_GPU_GetThermalSettings(phys, 0, &thermal);
-	if (ret != NVAPI_OK)
-	{
-		NvAPI_GetErrorMessage(ret, err);
-		std::cout << "NVAPI NvAPI_Initialize: " << err << std::endl;
-	}
-	else
-	{
-		std::cout << "Temp: " << thermal.sensor[0].currentTemp << std::endl;
-	}
-
 
 	return 0;
 }
