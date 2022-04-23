@@ -33,7 +33,7 @@ int main()
 	result = nvmlDeviceGetCount(&device_count);
 	if (NVML_SUCCESS != result)
 	{
-		std::cout << "Failed to query device count: " << nvmlErrorString(result) << std::endl;
+		std::cout << "Failed to query get device count: " << nvmlErrorString(result) << std::endl;
 	}
 	else
 	{
@@ -46,11 +46,56 @@ int main()
 	result = nvmlDeviceGetName(device, device_name, 64);
 	if (NVML_SUCCESS != result)
 	{
-		std::cout << "Failed to query device name: " << nvmlErrorString(result) << std::endl;
+		std::cout << "Failed to query get device name: " << nvmlErrorString(result) << std::endl;
 	}
 	else
 	{
 		std::cout << "Name: " << device_name << std::endl;
+	}
+
+
+	//NVML version
+	char nvml_ver[64];
+	result = nvmlSystemGetNVMLVersion(nvml_ver, 64);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get NVML version: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "NVML version: " << nvml_ver << std::endl;
+	}
+
+
+
+	//Driver version
+	char driver_ver[64];
+	result = nvmlSystemGetDriverVersion(driver_ver, 64);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get driver version: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "Driver version: " << driver_ver << std::endl;
+	}
+
+
+
+
+
+
+
+	//Fan speed
+	unsigned int device_fanspeed;
+	result = nvmlDeviceGetFanSpeed(device, &device_fanspeed);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get fan speed: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << device_fanspeed << std::endl;
 	}
 
 	return 0;
