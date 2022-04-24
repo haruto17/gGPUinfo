@@ -1,4 +1,5 @@
 #include<iostream>
+#include<windows.h>
 #include"nvml/nvml.h"
 
 #pragma comment(lib,"nvml/lib/nvml.lib")
@@ -32,6 +33,8 @@ int main()
 	{
 		std::cout << "Attached: " << device_count << std::endl;
 	}
+
+	
 
 
 	//GPU name
@@ -145,9 +148,33 @@ int main()
 		std::cout << "Used: " << memory.used << "[B]" << std::endl;
 		std::cout << "Total: " << memory.total << "[B]" << std::endl;
 	}
+	
+
+	std::cout << std::endl;
+
+	std::cout << "test : monitor GPU temp" << std::endl;
+	//monitor temp
+	while (true)
+	{
+		//Temperature
+		unsigned int temp;
+		result = nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &temp);
+		if (NVML_SUCCESS != result)
+		{
+			std::cout << "Failed to query get temperature: " << nvmlErrorString(result) << std::endl;
+		}
+		else
+		{
+			std::cout << "Temp: " << temp << "[C]" << std::endl;
+		}
+
+		Sleep(3000);
+	}
 
 
 
+	//nvmlShutdown();
 
-	nvmlShutdown();
+
+
 }
