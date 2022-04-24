@@ -166,6 +166,7 @@ int main()
 		else
 		{
 			std::cout << "Temp: " << temp << "[C]" << std::endl;
+			std::cout << std::endl;
 		}
 
 		Sleep(3000);
