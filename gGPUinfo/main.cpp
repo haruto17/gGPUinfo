@@ -75,87 +75,29 @@ int main()
 	{
 		std::cout << "Driver version: " << driver_ver << std::endl;
 	}
-
-
-
-	//Power util
-	unsigned int power;
-	result = nvmlDeviceGetPowerUsage(device, &power);
-	if (NVML_SUCCESS != result)
-	{
-		std::cout << "Failed to query get power util: " << nvmlErrorString(result) << std::endl;
-	}
-	else
-	{
-		std::cout << "Power util: " << power / 1000.0 << "[W]" << std::endl;
-	}
-
-
-
-	//Temperature
-	unsigned int temp;
-	result = nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &temp);
-	if (NVML_SUCCESS != result)
-	{
-		std::cout << "Failed to query get temperature: " << nvmlErrorString(result) << std::endl;
-	}
-	else
-	{
-		std::cout << "Temp: " << temp << "[C]" << std::endl;
-	}
-
-
-
-	//Fan speed
-	unsigned int device_fanspeed;
-	result = nvmlDeviceGetFanSpeed(device, &device_fanspeed);
-	if (NVML_SUCCESS != result)
-	{
-		std::cout << "Failed to query get fan speed: " << nvmlErrorString(result) << std::endl;
-	}
-	else
-	{
-		std::cout << device_fanspeed << std::endl;
-	}
-
-
-	//GPU util
-	nvmlUtilization_t device_util;
-	result = nvmlDeviceGetUtilizationRates(device, &device_util);
-	if (NVML_SUCCESS != result)
-	{
-		std::cout << "Failed to query get GPU usage: " << nvmlErrorString(result) << std::endl;
-	}
-	else
-	{
-
-		std::cout << "GPU: " << device_util.gpu << "[%]" << std::endl;
-		std::cout << "Memory: " << device_util.memory << "[%]" << std::endl;
-	}
-
-
-	//Memory info
-	nvmlMemory_t memory;
-	result = nvmlDeviceGetMemoryInfo(device, &memory);
-	if (NVML_SUCCESS != result)
-	{
-		std::cout << "Failed to query get memory info: " << nvmlErrorString(result) << std::endl;
-	}
-	else
-	{
-		std::cout << "Memory info" << std::endl;
-		std::cout << "Free: " << memory.free << "[B]" << std::endl;
-		std::cout << "Used: " << memory.used << "[B]" << std::endl;
-		std::cout << "Total: " << memory.total << "[B]" << std::endl;
-	}
 	
-
 	std::cout << std::endl;
 
 	std::cout << "test : monitor GPU temp" << std::endl;
 	//monitor temp
 	while (true)
 	{
+
+		//bug!!!
+		//Power util
+		unsigned int power;
+		result = nvmlDeviceGetPowerUsage(device, &power);
+		if (NVML_SUCCESS != result)
+		{
+			std::cout << "Failed to query get power util: " << nvmlErrorString(result) << std::endl;
+		}
+		else
+		{
+			std::cout << "Power util: " << power / 1000.0 << "[W]" << std::endl;
+		}
+
+
+
 		//Temperature
 		unsigned int temp;
 		result = nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &temp);
@@ -166,15 +108,62 @@ int main()
 		else
 		{
 			std::cout << "Temp: " << temp << "[C]" << std::endl;
-			std::cout << std::endl;
 		}
 
-		Sleep(3000);
+
+
+		//Fan speed
+		unsigned int device_fanspeed;
+		result = nvmlDeviceGetFanSpeed(device, &device_fanspeed);
+		if (NVML_SUCCESS != result)
+		{
+			std::cout << "Failed to query get fan speed: " << nvmlErrorString(result) << std::endl;
+		}
+		else
+		{
+			std::cout << device_fanspeed << std::endl;
+		}
+
+
+
+		//GPU util
+		nvmlUtilization_t device_util;
+		result = nvmlDeviceGetUtilizationRates(device, &device_util);
+		if (NVML_SUCCESS != result)
+		{
+			std::cout << "Failed to query get GPU usage: " << nvmlErrorString(result) << std::endl;
+		}
+		else
+		{
+
+			std::cout << "GPU: " << device_util.gpu << "[%]" << std::endl;
+			std::cout << "Memory: " << device_util.memory << "[%]" << std::endl;
+		}
+
+		//Memory info
+		nvmlMemory_t memory;
+		result = nvmlDeviceGetMemoryInfo(device, &memory);
+		if (NVML_SUCCESS != result)
+		{
+			std::cout << "Failed to query get memory info: " << nvmlErrorString(result) << std::endl;
+		}
+		else
+		{
+			std::cout << "Memory info" << std::endl;
+			std::cout << "Free: " << memory.free << "[B]" << std::endl;
+			std::cout << "Used: " << memory.used << "[B]" << std::endl;
+			std::cout << "Total: " << memory.total << "[B]" << std::endl;
+		}
+
+
+		std::cout << std::endl;
+
+		Sleep(5000);
 	}
 
 
 
-	//nvmlShutdown();
+	nvmlShutdown();
 
 
 
