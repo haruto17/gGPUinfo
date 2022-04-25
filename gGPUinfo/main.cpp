@@ -117,6 +117,21 @@ int main()
 		std::cout << "Driver version: " << driver_ver << std::endl;
 	}
 	
+
+
+	//CUDA version
+	int cuda_ver;
+	result = nvmlSystemGetCudaDriverVersion(&cuda_ver);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << "Failed to query get CUDA version: " << nvmlErrorString(result) << std::endl;
+	}
+	else
+	{
+		std::cout << "CUDA version: " << NVML_CUDA_DRIVER_VERSION_MAJOR(cuda_ver) << "." << NVML_CUDA_DRIVER_VERSION_MINOR(cuda_ver) << std::endl;
+	}
+
+
 	std::cout << std::endl;
 
 	std::cout << "test : monitor GPU Info" << std::endl;
