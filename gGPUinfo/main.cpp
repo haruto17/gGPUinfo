@@ -195,9 +195,9 @@ int main()
 		else
 		{
 			std::cout << "Memory info" << std::endl;
-			std::cout << "Free: " << memory.free << "[B]" << std::endl;
-			std::cout << "Used: " << memory.used << "[B]" << std::endl;
-			std::cout << "Total: " << memory.total << "[B]" << std::endl;
+			std::cout << "Free: " << memory.free / 1000000 << "[MB]" << std::endl;
+			std::cout << "Used: " << memory.used / 1000000 << "[MB]" << std::endl;
+			std::cout << "Total: " << memory.total / 1000000 << "[MB]" << std::endl;
 		}
 
 
