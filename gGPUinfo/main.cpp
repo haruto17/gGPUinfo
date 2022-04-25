@@ -1,10 +1,51 @@
 #include<iostream>
+#include<string>
+#include<vector>
 #include<windows.h>
+#include<time.h>
 #include"nvml/nvml.h"
 
 #pragma comment(lib,"nvml/lib/nvml.lib")
 
 const unsigned int gpu_id = 0;
+
+
+
+std::string GetTimeStamp()
+{
+	time_t now = time(NULL);
+	struct tm local;
+	errno_t err = localtime_s(&local, &now);
+
+	std::vector<int> timeInfo(6);
+
+	timeInfo[0] = local.tm_year + 1900;
+	timeInfo[1] = local.tm_mon + 1;
+	timeInfo[2] = local.tm_mday;
+	timeInfo[3] = local.tm_hour;
+	timeInfo[4] = local.tm_min;
+	timeInfo[5] = local.tm_sec;
+
+	std::string timestamp = std::to_string(timeInfo[0]);
+
+	for (int i = 1; i < 6; i++)
+	{
+
+		timestamp += "/" + std::to_string(timeInfo[i]);
+	}
+
+	return timestamp;
+
+}
+
+
+
+
+
+
+
+
+
 
 int main()
 {
@@ -78,10 +119,14 @@ int main()
 	
 	std::cout << std::endl;
 
-	std::cout << "test : monitor GPU temp" << std::endl;
+	std::cout << "test : monitor GPU Info" << std::endl;
 	//monitor temp
 	while (true)
 	{
+
+		//show timestamp
+		std::cout << GetTimeStamp() << std::endl;
+
 
 		//bug!!!
 		//Power util
