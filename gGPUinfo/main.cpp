@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<stdlib.h>
 #include<vector>
 #include<windows.h>
 #include<time.h>
@@ -60,11 +61,320 @@ unsigned int GetDeviceAttached()
 	}
 }
 
+std::string GetDeviceName(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	char device_name[64];
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlDeviceGetName(device, device_name, 64);
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		return device_name;
+	}
+}
 
 
+std::string GetNVMLVersion()
+{
+	nvmlReturn_t result;
+	char ver[64];
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlSystemGetNVMLVersion(ver, 64);
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		return ver;
+	}
+}
 
 
+std::string GetDriverVersion()
+{
+	nvmlReturn_t result;
+	char ver[64];
 
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlSystemGetDriverVersion(ver, 64);
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		return ver;
+	}
+}
+
+
+std::string GetCUDAVersion()
+{
+	nvmlReturn_t result;
+	int ver;
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlSystemGetCudaDriverVersion(&ver);
+	if (NVML_SUCCESS != result)
+	{
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		int ver_major = NVML_CUDA_DRIVER_VERSION_MAJOR(ver);
+		int ver_minor = NVML_CUDA_DRIVER_VERSION_MINOR(ver);
+		std::string s_ver;
+		s_ver += std::to_string(ver_major);
+		s_ver += ".";
+		s_ver += std::to_string(ver_minor);
+
+		return s_ver;
+	}
+}
+
+
+unsigned int GetDevicePowerUsage(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	unsigned int power;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetPowerUsage(device, &power);
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return power;
+	}
+}
+
+
+float GetDeviceTemperature(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	unsigned int temp;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetTemperature(device, NVML_TEMPERATURE_GPU, &temp);
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		float f_temp = float(temp);
+		return f_temp;
+	}
+}
+
+
+unsigned int GetDeviceFanSpeed(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	unsigned int fanspeed;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetFanSpeed(device, &fanspeed);
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return fanspeed;
+	}
+}
+
+
+unsigned int GetDeviceGPUUtil(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	nvmlUtilization_t util;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetUtilizationRates(device, &util);
+
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return util.gpu;
+	}
+}
+
+
+unsigned int GetDeviceMemoryUtil(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	nvmlUtilization_t util;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetUtilizationRates(device, &util);
+
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return util.memory;
+	}
+}
+
+
+unsigned int GetDeviceMemoryFree(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	nvmlMemory_t memory;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetMemoryInfo(device, &memory);
+
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return memory.free;
+	}
+}
+
+
+unsigned int GetDeviceMemoryUsed(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	nvmlMemory_t memory;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetMemoryInfo(device, &memory);
+
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return memory.used;
+	}
+}
+
+
+unsigned int GetDeviceMemoryTotal(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	nvmlMemory_t memory;
+
+	nvmlDeviceGetHandleByIndex(index, &device);
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+
+	result = nvmlDeviceGetMemoryInfo(device, &memory);
+
+	if (NVML_SUCCESS != result)
+	{
+		return NULL;
+	}
+	else
+	{
+		return memory.total;
+	}
+}
 
 
 int main()
@@ -75,12 +385,87 @@ int main()
 	unsigned int device_count = GetDeviceAttached();
 	if (device_count == NULL)
 	{
-		std::cout << "Fialed to query get device count" << std::endl;
+		std::cout << "Failed to query get device count" << std::endl;
 	}
 	else
 	{
 		std::cout << "Attached: " << device_count << std::endl;
 	}
+
+	//Get GPU name
+	std::string device_name = GetDeviceName(0);
+	std::cout << device_name << std::endl;
+
+
+	//Get NVML version
+	std::string nvml_ver = GetNVMLVersion();
+	std::cout << nvml_ver << std::endl;
+
+
+	//Get driver version
+	std::string driver_ver = GetDriverVersion();
+	std::cout << driver_ver << std::endl;
+
+
+	//Get CUDA version
+	std::string cuda_ver = GetCUDAVersion();
+	std::cout << cuda_ver << std::endl;
+
+
+	std::cout << std::endl;
+
+
+	while (true)
+	{
+
+		//Show timestamp
+		std::cout << GetTimeStamp() << std::endl;
+
+
+		//Get power util
+		unsigned int device_power = GetDevicePowerUsage(0);
+		std::cout << device_power / 1000.0 << "[W]" << std::endl;
+
+
+		//Get temperature
+		float device_temp = GetDeviceTemperature(0);
+		std::cout << device_temp << "[C]" << std::endl;
+
+
+		//Get fan speed
+		unsigned int device_fanspeed = GetDeviceFanSpeed(0);
+		std::cout << device_fanspeed << std::endl;
+
+
+		//Get GPU util
+		unsigned int gpu_util = GetDeviceGPUUtil(0);
+		std::cout << gpu_util << "[%]" << std::endl;
+
+
+		//Get memory util
+		unsigned int memory_util = GetDeviceMemoryUtil(0);
+		std::cout << memory_util << "[%]" << std::endl;
+
+
+		//Get memory free
+		unsigned int memory_free = GetDeviceMemoryFree(0);
+		std::cout << memory_free << std::endl;
+
+
+		//Get memory used
+		unsigned int memory_used = GetDeviceMemoryUsed(0);
+		std::cout << memory_used << std::endl;
+
+
+		//Get memory total
+		unsigned int memory_total = GetDeviceMemoryTotal(0);
+		std::cout << memory_total << std::endl;
+
+		std::cout << std::endl;
+
+		Sleep(5000);
+	}
+	
 
 	//nvmlDevice_t device;
 
