@@ -67,11 +67,17 @@ std::string GetDeviceName(int index)
 	nvmlReturn_t result;
 	char device_name[64];
 
-	nvmlDeviceGetHandleByIndex(index, &device);
-
 	result = nvmlInit();
 	if (NVML_SUCCESS != result)
 	{
+		std::cout << nvmlErrorString(result) << std::endl;
+	}
+
+	//If you specify an invalid index...
+	result = nvmlDeviceGetHandleByIndex(index, &device);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << nvmlErrorString(result) << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -394,7 +400,7 @@ int main()
 	}
 
 	//Get GPU name
-	std::string device_name = GetDeviceName(0);
+	std::string device_name = GetDeviceName(1);
 	std::cout << "Name: " << device_name << std::endl;
 
 
