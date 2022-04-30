@@ -249,6 +249,7 @@ unsigned int GetDeviceGPUUtil(int index)
 	nvmlUtilization_t util;
 
 	nvmlDeviceGetHandleByIndex(index, &device);
+	
 
 	result = nvmlInit();
 	if (NVML_SUCCESS != result)
@@ -394,22 +395,22 @@ int main()
 
 	//Get GPU name
 	std::string device_name = GetDeviceName(0);
-	std::cout << device_name << std::endl;
+	std::cout << "Name: " << device_name << std::endl;
 
 
 	//Get NVML version
 	std::string nvml_ver = GetNVMLVersion();
-	std::cout << nvml_ver << std::endl;
+	std::cout << "NVML version: " << nvml_ver << std::endl;
 
 
 	//Get driver version
 	std::string driver_ver = GetDriverVersion();
-	std::cout << driver_ver << std::endl;
+	std::cout << "Driver version: " << driver_ver << std::endl;
 
 
 	//Get CUDA version
 	std::string cuda_ver = GetCUDAVersion();
-	std::cout << cuda_ver << std::endl;
+	std::cout << "CUDA version: " << cuda_ver << std::endl;
 
 
 	std::cout << std::endl;
@@ -424,42 +425,42 @@ int main()
 
 		//Get power util
 		unsigned int device_power = GetDevicePowerUsage(0);
-		std::cout << device_power / 1000.0 << "[W]" << std::endl;
+		std::cout << "Power util: " << device_power / 1000.0 << "[W]" << std::endl;
 
 
 		//Get temperature
 		float device_temp = GetDeviceTemperature(0);
-		std::cout << device_temp << "[C]" << std::endl;
+		std::cout << "Temp: " << device_temp << "[C]" << std::endl;
 
 
 		//Get fan speed
 		unsigned int device_fanspeed = GetDeviceFanSpeed(0);
-		std::cout << device_fanspeed << std::endl;
+		std::cout << "Fan speed: " << device_fanspeed << "[%]" << std::endl;
 
 
 		//Get GPU util
 		unsigned int gpu_util = GetDeviceGPUUtil(0);
-		std::cout << gpu_util << "[%]" << std::endl;
+		std::cout << "GPU util: " << gpu_util << "[%]" << std::endl;
 
 
 		//Get memory util
 		unsigned int memory_util = GetDeviceMemoryUtil(0);
-		std::cout << memory_util << "[%]" << std::endl;
+		std::cout << "Memory util: " << memory_util << "[%]" << std::endl;
 
 
 		//Get memory free
 		unsigned int memory_free = GetDeviceMemoryFree(0);
-		std::cout << memory_free << std::endl;
+		std::cout << "Memory free: " << memory_free << "[B]" << std::endl;
 
 
 		//Get memory used
 		unsigned int memory_used = GetDeviceMemoryUsed(0);
-		std::cout << memory_used << std::endl;
+		std::cout << "Memory used: " << memory_used << "[B]" << std::endl;
 
 
 		//Get memory total
 		unsigned int memory_total = GetDeviceMemoryTotal(0);
-		std::cout << memory_total << std::endl;
+		std::cout << "Memory total: " << memory_total << "[B]" << std::endl;
 
 		std::cout << std::endl;
 
