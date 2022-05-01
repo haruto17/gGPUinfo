@@ -450,6 +450,40 @@ unsigned int GetDeviceMemoryTotal(int index)
 }
 
 
+unsigned int GetDeviceClock(int index)
+{
+	nvmlDevice_t device;
+	nvmlReturn_t result;
+	unsigned int clock;
+
+	result = nvmlInit();
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << nvmlErrorString(result) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlDeviceGetHandleByIndex(index, &device);
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << nvmlErrorString(result) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	result = nvmlDeviceGetClock(device, NVML_CLOCK_GRAPHICS, NVML_CLOCK_ID_CURRENT, &clock);
+	
+	if (NVML_SUCCESS != result)
+	{
+		std::cout << nvmlErrorString(result) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		return clock;
+	}
+}
+
+
 int main()
 {
 	nvmlInit();
@@ -528,13 +562,16 @@ int main()
 		unsigned int memory_total = GetDeviceMemoryTotal(0);
 		std::cout << "Memory total: " << memory_total << "[B]" << std::endl;
 
+
+		//Get clock;
+		unsigned int device_clock = GetDeviceClock(0);
+		std::cout << "Clock: " << device_clock << "[MHz]" << std::endl;
+
 		std::cout << std::endl;
 
 		Sleep(5000);
 	}
 	
 	nvmlShutdown();
-
-
 
 }
